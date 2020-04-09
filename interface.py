@@ -1,3 +1,9 @@
+"""
+Project Tubes PMC 
+Simulator RC 
+Kelompok 17
+"""
+
 
 from tkinter import *
 # from tkinter.ttk import *
