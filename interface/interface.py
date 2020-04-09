@@ -206,12 +206,13 @@ def bar3():
     f2.after(100,bar4)
 def bar4():
     label_Process.configure(text="Running C Code.....")
-    os.system("gcc -o run mainprog.c matriks.c && run")
+    os.system("gcc -o run ../programc/mainprog.c ../programc/matriks.c ")
     bar['value']=60
     f2.after(500,bar5)
 
 def bar5():
     bar['value']=80
+    os.system('run')
     f2.after(500,bar6)
 
 def bar6():

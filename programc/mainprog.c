@@ -121,7 +121,7 @@ void getRHS(cmp *arr, float *rhs, float *v){
 
 int main(){
   FILE *fp;
-  fp = fopen("./netlist.txt", "r");
+  fp = fopen("../interface/netlist.txt", "r");
   fscanf(fp, "%d %d ", &n_nodes, &n_comp);
 
   cmp* arrComp = (cmp*)malloc(sizeof(cmp)*n_comp);
@@ -154,7 +154,7 @@ int main(){
   // multMatrix(conductanceInv, rhs, vf, n_nodes);
   // updateV(vf, vi, n_nodes);
   FILE *fout;
-  fout = fopen("./output.csv", "w");
+  fout = fopen("../interface/output.csv", "w");
 
   // Header output file
   fprintf(fout, "time");
