@@ -1,2 +1,0 @@
-# projekTubesPMC
-Kelompok 17

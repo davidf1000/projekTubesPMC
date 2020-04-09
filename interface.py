@@ -1,9 +1,3 @@
-"""
-Project Tubes PMC 
-Simulator RC 
-Kelompok 17
-"""
-
 
 from tkinter import *
 # from tkinter.ttk import *
@@ -168,6 +162,7 @@ def proc_time():
 #write to txt
 def writetoTxt(res,dc,cap,time):
     """
+    ex :
         2 3
     v 0 1 10
     r 1 2 20000
