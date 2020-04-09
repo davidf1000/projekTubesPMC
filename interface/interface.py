@@ -238,13 +238,16 @@ def showplot():
     fig.suptitle('Voltage Plot', fontsize=20)
     plt.xlabel('Time (S)', fontsize=18)
     plt.ylabel('Voltage (V)', fontsize=16)
-    leg = plt.legend()
+    plt.grid(True)
+    plt.legend()
     #Arus
     fig2=plt.figure()
     plt.plot(x,p,label="Arus")
     fig2.suptitle('Current Plot', fontsize=20)
     plt.xlabel('Time (S)', fontsize=18)
     plt.ylabel('Current (mA)', fontsize=16)
+    plt.legend()
+    plt.grid(True)
     plt.show()
 #Time 
 label_time=Label(f2,font=("Arial",grid3_front_size),text="Stop Time :",height=grid3_heigth-2)

@@ -3,7 +3,7 @@
 #include "matriks.h"
 #include <time.h>
 #define Gs 100000
-#define T 0.0005
+#define T 0.00001
 
 typedef struct component{
   char type;
