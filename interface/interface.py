@@ -30,7 +30,7 @@ grid3_front_size=15
 gridintro_heigth=8
 # Intro Frame
 #Intro middle
-label_Intro=Label(f1,font=("Arial",grid3_front_size),text="Welcome to RC Simulator",height=gridintro_heigth,width=grid3_width)
+label_Intro=Label(f1,font=("Arial",grid3_front_size+4),text="Welcome to RC Simulator",height=gridintro_heigth,width=grid3_width)
 label_Intro.grid(column=1,row=0)
 #Filler intro column 0 1 
 label_Intro1=Label(f1,font=("Arial",grid3_front_size),text=" ",height=gridintro_heigth,width=grid3_width)
@@ -40,25 +40,28 @@ label_Intro2.grid(column=2,row=0)
 #scroll text to show team member list
 scroll=scrolledtext.ScrolledText(f1,width=25,height=7,font=("Arial",grid3_front_size))
 scroll.grid(column=1,row=1)
+
+#Instruction
+strintro="Instruction :\n1. Click Start\n2.Input all component values\n3. Input simulation stop time\n4. Click simulate"
+label_Ins=Label(f1,font=("Arial",grid3_front_size),text=strintro,height=gridintro_heigth,width=grid3_width+5)
+label_Ins.grid(column=1,row=4)
 # callback function to print all team member and nim 
 def inputtext():
     scroll.insert(INSERT,"Kelompok 17 ...\n")
     f1.after(500,second)
 def second():
-    scroll.insert(INSERT,"David Fauzi / 13218043\n")
+    scroll.insert(INSERT,"David Fauzi       / 13218043\n")
     f1.after(500,third)
 
 def third():
-    scroll.insert(INSERT,"Elang Aditya / 13218041 \n")
+    scroll.insert(INSERT,"Elang Aditya      / 13218041 \n")
     f1.after(500,fourth)
 
 def fourth():
-    scroll.insert(INSERT,"Putri Yulianti / 13218004 \n")
+    scroll.insert(INSERT,"Putri Yulianti      / 18318004 \n")
     f1.after(500,fifth)
 def fifth():
     scroll.insert(INSERT,"Lucas Valentino / 13218042 \n")
-# def delete():
-    # scroll.delete(1.0,END)
 
 #Button , when pressed frame changed to main frame
 btn_Start=Button(f1,font=("Arial",grid3_front_size),text="Start",bd=3,command=lambda:raise_frame(f2) )
@@ -81,7 +84,7 @@ input_Resistor.grid(column=1,row=2)
 #Combobox
 comboRes = ttk.Combobox(f2,width=5)
 comboRes['values']=('Ω','KΩ','MΩ')
-comboRes.current(0)
+comboRes.current(1)
 comboRes.grid(column=1,row=3,pady=4)
 
 #DC Voltage Section
@@ -233,7 +236,7 @@ def showplot():
     #plot
     #Voltage
     fig=plt.figure()
-    plt.plot(x,y,label="DC Source")
+    plt.plot(x,y,label="Source Voltage")
     plt.plot(x,z,label="Cap Voltage")
     fig.suptitle('Voltage Plot', fontsize=20)
     plt.xlabel('Time (S)', fontsize=18)
@@ -242,7 +245,7 @@ def showplot():
     plt.legend()
     #Arus
     fig2=plt.figure()
-    plt.plot(x,p,label="Arus")
+    plt.plot(x,p,label="Current")
     fig2.suptitle('Current Plot', fontsize=20)
     plt.xlabel('Time (S)', fontsize=18)
     plt.ylabel('Current (mA)', fontsize=16)
