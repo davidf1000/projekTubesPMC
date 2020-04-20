@@ -16,6 +16,7 @@ window=Tk()
 window.title("RC Simulator")
 window.geometry("700x800")
 # Frame 1 (Intro) amd Frame 2 (Main)
+print("Starting Program")
 def raise_frame(frame):
     frame.tkraise()
     
@@ -30,7 +31,7 @@ grid3_front_size=15
 gridintro_heigth=8
 # Intro Frame
 #Intro middle
-label_Intro=Label(f1,font=("Arial",grid3_front_size+4),text="Welcome to RC Simulator",height=gridintro_heigth,width=grid3_width)
+label_Intro=Label(f1,font=("Arial Bold",grid3_front_size+3),text="Welcome to RC Simulator",height=gridintro_heigth,width=grid3_width)
 label_Intro.grid(column=1,row=0)
 #Filler intro column 0 1 
 label_Intro1=Label(f1,font=("Arial",grid3_front_size),text=" ",height=gridintro_heigth,width=grid3_width)
@@ -42,7 +43,7 @@ scroll=scrolledtext.ScrolledText(f1,width=25,height=7,font=("Arial",grid3_front_
 scroll.grid(column=1,row=1)
 
 #Instruction
-strintro="Instruction :\n1. Click Start\n2.Input all component values\n3. Input simulation stop time\n4. Click simulate"
+strintro="Instruction :\n\n1. Click Start\n2.Input all component values\n3. Input simulation stop time\n4. Click simulate"
 label_Ins=Label(f1,font=("Arial",grid3_front_size),text=strintro,height=gridintro_heigth,width=grid3_width+5)
 label_Ins.grid(column=1,row=4)
 # callback function to print all team member and nim 
@@ -112,8 +113,8 @@ input_Cap.grid(column=2,row=5)
 input_Cap.focus()
 #Combobox
 comboCap = ttk.Combobox(f2,width=5)
-comboCap['values']=('pF','nF','uF')
-comboCap.current(2)
+comboCap['values']=('nF','uF')
+comboCap.current(1)
 comboCap.grid(column=2,row=6,pady=4)
 #Circuit Image
 img = PhotoImage(file = "rcnew.png")
@@ -145,9 +146,7 @@ def proc_DC():
 def proc_cap():
     cap=float(input_Cap.get())
     mark=comboCap.get()
-    if(mark=="pF"):
-        cap*=1e-12
-    elif(mark=="nF"):
+    if(mark=="nF"):
         cap*=1e-9
     elif(mark=="uF"):
         cap*=1e-6
@@ -159,8 +158,6 @@ def proc_time():
         time*=1
     elif(mark=="mS"):
         time*=1e-3
-    elif(mark=="uS"):
-        time*=1e-6
     return time   
 #write to txt
 def writetoTxt(res,dc,cap,time):
@@ -192,10 +189,13 @@ def calc():
     cap=proc_cap()
     time=proc_time()
     writetoTxt(res,dc,cap,time)
-    print("res :"+str(res))
-    print("dc :"+str(dc))
-    print("cap :"+str(cap))
-    print("time :"+str(time))
+    print("Input User :\n")
+    print("Resistor :"+str(res))
+    print("DC Source :"+str(dc))
+    print("Kapasitor :"+str(cap))
+    print("Stop Time :"+str(time))
+    print("\n")
+    print("Data telah di simpan di netlist.txt")
     bar2()
 
 #bar increase
@@ -216,6 +216,7 @@ def bar4():
 def bar5():
     bar['value']=80
     os.system('run')
+    print("Kode C telah di compile dan di run")
     f2.after(500,bar6)
 
 def bar6():
@@ -226,6 +227,8 @@ def bar6():
 #update text process
 def updateproc():
     label_Process.configure(text="Success, Showing plot...")
+    print("Menampilkan Plot dari output.csv")
+
 #showplot
 def showplot():
     data = pd.read_csv('output.csv',encoding='utf8')
@@ -261,8 +264,8 @@ input_time.grid(column=1,row=9)
 input_time.focus()
 
 comboTime = ttk.Combobox(f2,width=5)
-comboTime['values']=('uS','mS','S')
-comboTime.current(1)
+comboTime['values']=('mS','S')
+comboTime.current(0)
 comboTime.grid(column=1,row=10,pady=4)
 #When pressed callback to function
 btn_Calculate=Button(f2,font=("Arial",grid3_front_size+5),text="Simulate",bd=3,command=calc)
