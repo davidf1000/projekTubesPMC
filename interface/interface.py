@@ -43,8 +43,8 @@ scroll=scrolledtext.ScrolledText(f1,width=25,height=7,font=("Arial",grid3_front_
 scroll.grid(column=1,row=1)
 
 #Instruction
-strintro="Instruction :\n\n1. Click Start\n2.Input all component values\n3. Input simulation stop time\n4. Click simulate"
-label_Ins=Label(f1,font=("Arial",grid3_front_size),text=strintro,height=gridintro_heigth,width=grid3_width+5)
+strintro="Instruction :\n\n1. Click Start\n2.Input all component values\n3. Input simulation stop time\n4. Choose Plot Option \n5. Click simulate"
+label_Ins=Label(f1,justify="center",font=("Arial",grid3_front_size),text=strintro,height=gridintro_heigth,width=grid3_width+5)
 label_Ins.grid(column=1,row=4)
 # callback function to print all team member and nim 
 def inputtext():
@@ -240,12 +240,16 @@ def showplot():
     z=data['v_2']
     p=data['i_1']
     r=data['res']
+    ptot=data['ptot']
+    pres=data['pres']
+    pcap=data['pcap']
+
     #plot
     #Voltage
     if((vcc_state.get()) or (cap_state.get()) or (res_state.get())):
         fig=plt.figure()
         if(vcc_state.get()):
-            plt.plot(x,y,label="Source Voltage",linewidth=3.5)
+            plt.plot(x,y,label="Source Voltage",linewidth=2.5)
         if(cap_state.get()):
             plt.plot(x,z,label="Cap Drop Voltage",linewidth=2)
         if(res_state.get()):
@@ -264,7 +268,22 @@ def showplot():
         plt.ylabel('Current (mA)', fontsize=16)
         plt.legend()
         plt.grid(True)
-    if (curr_state.get() or (vcc_state.get()) or (cap_state.get()) or (res_state.get())): 
+    # Daya
+    if(powertot_state.get() or powerres_state.get() or powercap_state.get() ):
+        fig3=plt.figure()
+        if(powertot_state.get()):
+            plt.plot(x,ptot,label="Supply Power",linewidth=2.5)
+        if(powerres_state.get()):
+            plt.plot(x,pres,label="Res Power",linewidth=2)    
+        if(powercap_state.get()):
+            plt.plot(x,pcap,label="Cap Power",linewidth=2)
+        fig3.suptitle('Power Plot', fontsize=20)
+        plt.xlabel('Time (S)', fontsize=18)
+        plt.ylabel('Power (mW)', fontsize=16)
+        plt.legend()
+        plt.grid(True)
+
+    if (powertot_state.get() or powerres_state.get() or powercap_state.get() or curr_state.get() or (vcc_state.get()) or (cap_state.get()) or (res_state.get())): 
         plt.show()
     else:
         label_Process.configure(text="Nothing to plot..\nCheck At least 1 Plot option")
@@ -317,6 +336,25 @@ res_state = BooleanVar()
 res_state.set(True) #set check state
 res_chk = Checkbutton(f2, text='Res Voltage Drop',font=("Arial",grid3_front_size), var=res_state)
 res_chk.grid(column=2, row=12)
+
+# tot power
+powertot_state = BooleanVar()
+powertot_state.set(True) #set check state
+powertot_chk = Checkbutton(f2, text='Supply Power',font=("Arial",grid3_front_size), var=powertot_state)
+powertot_chk.grid(column=2, row=13)
+
+# res power
+powerres_state = BooleanVar()
+powerres_state.set(True) #set check state
+powerres_chk = Checkbutton(f2, text='Res Power',font=("Arial",grid3_front_size), var=powerres_state)
+powerres_chk.grid(column=0, row=13)
+
+# cap power
+powercap_state = BooleanVar()
+powercap_state.set(True) #set check state
+powercap_chk = Checkbutton(f2, text='Cap Power',font=("Arial",grid3_front_size), var=powercap_state)
+powercap_chk.grid(column=0, row=10)
+
 
 
 #dont change

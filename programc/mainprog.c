@@ -166,8 +166,11 @@ int main(){
   fprintf(fout, ",i_%d", p+1);
   } 
   fprintf(fout, ",res");
+  fprintf(fout, ",pres,pcap,ptot");
   fprintf(fout, "\n");
-
+  double curr;
+  double dropres;
+  double dropcap;
   //Value
   for (int i = 0; i <= (t/T); i++){
     fprintf(fout, "%.5f", i*T);
@@ -175,9 +178,16 @@ int main(){
       fprintf(fout, ",%.5f", vi[j]);
     }
     for (int p = 1; p <= n_nodes-1; p++){
-      fprintf(fout, ",%.5f", ((double)(vi[p-1]-vi[p])/(double)arrComp[1].val)*1000); //buat arus
-      fprintf(fout, ",%.5f", ((double)(vi[p-1]-vi[p])));
-    }  
+      curr=(double)((vi[p-1]-vi[p])/(double)arrComp[1].val)*1000;
+      dropres=(double)(vi[p-1]-vi[p]);
+      dropcap=(double)(vi[p]);
+      fprintf(fout, ",%.5f",curr); //buat arus
+      fprintf(fout, ",%.5f", dropres); // drop voltage
+      fprintf(fout, ",%.5f",curr*dropres ); // daya res
+      fprintf(fout, ",%.5f",curr*dropcap ); //day cap 
+      fprintf(fout, ",%.5f",curr*vi[p-1] ); //day cap 
+    } 
+
        //buat arus
     getRHS(arrComp, rhs, vi);
     multMatrix(conductanceInv, rhs, vi, n_nodes);
