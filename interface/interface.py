@@ -184,19 +184,22 @@ def writetoTxt(res,dc,cap,time):
 
 def calc():
     # os.system("gcc -o run mainprog.c matriks.c && run")
-    res=proc_res()
-    dc=proc_DC()
-    cap=proc_cap()
-    time=proc_time()
-    writetoTxt(res,dc,cap,time)
-    print("Input User :\n")
-    print("Resistor :"+str(res))
-    print("DC Source :"+str(dc))
-    print("Kapasitor :"+str(cap))
-    print("Stop Time :"+str(time))
-    print("\n")
-    print("Data telah di simpan di netlist.txt")
-    bar2()
+    try:
+        res=proc_res()
+        dc=proc_DC()
+        cap=proc_cap()
+        time=proc_time()
+        writetoTxt(res,dc,cap,time)
+        print("Input User :\n")
+        print("Resistor :"+str(res))
+        print("DC Source :"+str(dc))
+        print("Kapasitor :"+str(cap))
+        print("Stop Time :"+str(time))
+        print("\n")
+        print("Data telah di simpan di netlist.txt")
+        bar2()
+    except:
+        label_Process.configure(text="Please fill all components\nvalue first...")
 
 #bar increase
 
@@ -236,25 +239,37 @@ def showplot():
     y=data['v_1']
     z=data['v_2']
     p=data['i_1']
+    r=data['res']
     #plot
     #Voltage
-    fig=plt.figure()
-    plt.plot(x,y,label="Source Voltage")
-    plt.plot(x,z,label="Cap Voltage")
-    fig.suptitle('Voltage Plot', fontsize=20)
-    plt.xlabel('Time (S)', fontsize=18)
-    plt.ylabel('Voltage (V)', fontsize=16)
-    plt.grid(True)
-    plt.legend()
+    if((vcc_state.get()) or (cap_state.get()) or (res_state.get())):
+        fig=plt.figure()
+        if(vcc_state.get()):
+            plt.plot(x,y,label="Source Voltage",linewidth=3.5)
+        if(cap_state.get()):
+            plt.plot(x,z,label="Cap Drop Voltage",linewidth=2)
+        if(res_state.get()):
+            plt.plot(x,r,label="Res Drop Voltage",linewidth=2)  
+        fig.suptitle('Voltage Plot', fontsize=20)
+        plt.xlabel('Time (S)', fontsize=18)
+        plt.ylabel('Voltage (V)', fontsize=16)
+        plt.grid(True)
+        plt.legend()
     #Arus
-    fig2=plt.figure()
-    plt.plot(x,p,label="Current")
-    fig2.suptitle('Current Plot', fontsize=20)
-    plt.xlabel('Time (S)', fontsize=18)
-    plt.ylabel('Current (mA)', fontsize=16)
-    plt.legend()
-    plt.grid(True)
-    plt.show()
+    if(curr_state.get()):
+        fig2=plt.figure()
+        plt.plot(x,p,label="Current",linewidth=2)
+        fig2.suptitle('Current Plot', fontsize=20)
+        plt.xlabel('Time (S)', fontsize=18)
+        plt.ylabel('Current (mA)', fontsize=16)
+        plt.legend()
+        plt.grid(True)
+    if (curr_state.get() or (vcc_state.get()) or (cap_state.get()) or (res_state.get())): 
+        plt.show()
+    else:
+        label_Process.configure(text="Nothing to plot..\nCheck At least 1 Plot option")
+
+        
 #Time 
 label_time=Label(f2,font=("Arial",grid3_front_size),text="Stop Time :",height=grid3_heigth-2)
 label_time.grid(column=1,row=8)
@@ -266,7 +281,7 @@ input_time.focus()
 comboTime = ttk.Combobox(f2,width=5)
 comboTime['values']=('mS','S')
 comboTime.current(0)
-comboTime.grid(column=1,row=10,pady=4)
+comboTime.grid(column=1,row=10,pady=8)
 #When pressed callback to function
 btn_Calculate=Button(f2,font=("Arial",grid3_front_size+5),text="Simulate",bd=3,command=calc)
 btn_Calculate.grid(column=1,row=11,pady=10)
@@ -275,8 +290,36 @@ bar = Progressbar(f2, length=200)
 bar['value'] = 2
 bar.grid(column=1,row=12)
 #sucess 
-label_Process=Label(f2,font=("Arial",grid3_front_size),text=" ",height=grid3_heigth-2)
+label_Process=Label(f2,font=("Arial",grid3_front_size),text=" ",height=grid3_heigth)
 label_Process.grid(column=1,row=13)
+# Checkbox 
+
+# VCC 
+vcc_state = BooleanVar()
+vcc_state.set(True) #set check state
+vcc_chk = Checkbutton(f2, text='DC Supply',font=("Arial",grid3_front_size), var=vcc_state)
+vcc_chk.grid(column=0, row=11)
+
+# Current
+curr_state = BooleanVar()
+curr_state.set(True) #set check state
+curr_chk = Checkbutton(f2, text='Current',font=("Arial",grid3_front_size), var=curr_state)
+curr_chk.grid(column=0, row=12)
+
+#  Capacitor Voltage Drop
+cap_state = BooleanVar()
+cap_state.set(True) #set check state
+cap_chk = Checkbutton(f2, text='Cap Voltage Drop',font=("Arial",grid3_front_size), var=cap_state)
+cap_chk.grid(column=2, row=11)
+
+# Resistor voltage drop
+res_state = BooleanVar()
+res_state.set(True) #set check state
+res_chk = Checkbutton(f2, text='Res Voltage Drop',font=("Arial",grid3_front_size), var=res_state)
+res_chk.grid(column=2, row=12)
+
+
+#dont change
 raise_frame(f1)
 inputtext()
 window.mainloop()

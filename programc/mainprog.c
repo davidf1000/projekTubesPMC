@@ -157,6 +157,7 @@ int main(){
   fout = fopen("../interface/output.csv", "w");
 
   // Header output file
+  // JUDUL
   fprintf(fout, "time");
   for (int i = 0; i < n_nodes; i++){
     fprintf(fout, ",v_%d", i+1);
@@ -164,8 +165,10 @@ int main(){
   for (int p = 0; p < n_nodes-1; p++){
   fprintf(fout, ",i_%d", p+1);
   } 
+  fprintf(fout, ",res");
   fprintf(fout, "\n");
 
+  //Value
   for (int i = 0; i <= (t/T); i++){
     fprintf(fout, "%.5f", i*T);
     for (int j = 0; j < n_nodes; j++){
@@ -173,8 +176,9 @@ int main(){
     }
     for (int p = 1; p <= n_nodes-1; p++){
       fprintf(fout, ",%.5f", ((double)(vi[p-1]-vi[p])/(double)arrComp[1].val)*1000); //buat arus
+      fprintf(fout, ",%.5f", ((double)(vi[p-1]-vi[p])));
     }  
-
+       //buat arus
     getRHS(arrComp, rhs, vi);
     multMatrix(conductanceInv, rhs, vi, n_nodes);
     fprintf(fout, "\n");
