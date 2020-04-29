@@ -317,43 +317,43 @@ label_Process.grid(column=1,row=13)
 vcc_state = BooleanVar()
 vcc_state.set(True) #set check state
 vcc_chk = Checkbutton(f2, text='DC Supply',font=("Arial",grid3_front_size), var=vcc_state)
-vcc_chk.grid(column=0, row=11)
+vcc_chk.grid(column=0, row=10)
 
 # Current
 curr_state = BooleanVar()
 curr_state.set(True) #set check state
 curr_chk = Checkbutton(f2, text='Current',font=("Arial",grid3_front_size), var=curr_state)
-curr_chk.grid(column=0, row=12)
+curr_chk.grid(column=0, row=13)
 
 #  Capacitor Voltage Drop
 cap_state = BooleanVar()
 cap_state.set(True) #set check state
 cap_chk = Checkbutton(f2, text='Cap Voltage Drop',font=("Arial",grid3_front_size), var=cap_state)
-cap_chk.grid(column=2, row=11)
+cap_chk.grid(column=0, row=11)
 
 # Resistor voltage drop
 res_state = BooleanVar()
 res_state.set(True) #set check state
 res_chk = Checkbutton(f2, text='Res Voltage Drop',font=("Arial",grid3_front_size), var=res_state)
-res_chk.grid(column=2, row=12)
+res_chk.grid(column=0, row=12)
 
 # tot power
 powertot_state = BooleanVar()
 powertot_state.set(True) #set check state
 powertot_chk = Checkbutton(f2, text='Supply Power',font=("Arial",grid3_front_size), var=powertot_state)
-powertot_chk.grid(column=2, row=13)
+powertot_chk.grid(column=2, row=11)
 
 # res power
 powerres_state = BooleanVar()
 powerres_state.set(True) #set check state
 powerres_chk = Checkbutton(f2, text='Res Power',font=("Arial",grid3_front_size), var=powerres_state)
-powerres_chk.grid(column=0, row=13)
+powerres_chk.grid(column=2, row=12)
 
 # cap power
 powercap_state = BooleanVar()
 powercap_state.set(True) #set check state
 powercap_chk = Checkbutton(f2, text='Cap Power',font=("Arial",grid3_front_size), var=powercap_state)
-powercap_chk.grid(column=0, row=10)
+powercap_chk.grid(column=2, row=13)
 
 
 
