@@ -52,9 +52,3 @@ void multMatrix(float** src1, float *src2, float* dest, int n){
     dest[i] = temp;
   }
 }
-
-void updateV(float* src, float* dest, int n){
-  for (int i = 0; i < n; i++){
-    dest[i] = src[i];
-  }
-}
