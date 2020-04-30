@@ -1,4 +1,17 @@
+"""
+Program Interface 
+Kelompok 17
+David Fauzi     / 13218043
+Elang Aditya    / 13218041 
+Putri Yulianti  / 18318004 
+Lucas Valentino / 13218042 
 
+Keterangan : Program GUI menggunakan modul TKinter, masukan input akan disave pada file 
+netlist.txt dan program akan meng-compile dan run program mainprog.c menggunakan modul OS .
+Output berupa data CSV akan di plot menggunakan modul Pandas dan Matplotlib 
+"""
+
+#Import Modul
 from tkinter import *
 # from tkinter.ttk import *
 from tkinter import scrolledtext
@@ -17,11 +30,13 @@ window.title("RC Simulator")
 window.geometry("700x800")
 # Frame 1 (Intro) amd Frame 2 (Main)
 print("Starting Program")
+#Fungsi untuk switch frame 
 def raise_frame(frame):
     frame.tkraise()
-    
+#initialize frame
 f1 = Frame(window)
 f2 = Frame(window)
+#initialize grid 
 for frame in (f1, f2):
     frame.grid(row=0, column=0, sticky='news')
 #constant
@@ -29,7 +44,8 @@ grid3_width=20
 grid3_heigth=3
 grid3_front_size=15
 gridintro_heigth=8
-# Intro Frame
+
+# Tampilan Intro Frame
 #Intro middle
 label_Intro=Label(f1,font=("Arial Bold",grid3_front_size+3),text="Welcome to RC Simulator",height=gridintro_heigth,width=grid3_width)
 label_Intro.grid(column=1,row=0)
@@ -122,7 +138,7 @@ label_RC=Label(f2,image=img,width=250)
 label_RC.grid(column=1,row=7,rowspan=1)
 
 
-#Callback Function
+#Callback Function , get entry input lalu diconvert sesuai satuan yang dipilih combobox
 def proc_res():
     res=float(input_Resistor.get())
     mark=comboRes.get()
@@ -159,31 +175,29 @@ def proc_time():
     elif(mark=="mS"):
         time*=1e-3
     return time   
-#write to txt
+
+#write to txt netlist.txt
 def writetoTxt(res,dc,cap,time):
     """
-    ex :
+    contoh format :
         2 3
     v 0 1 10
     r 1 2 20000
     c 2 0 0.00001
     2.5
-
     """
     text=open("netlist.txt","w+")
+    #Struktur node konstan karena rangkaian pre-determined yaitu rangkaian RC 
     text.write("2 3\n")
     text.write("v 0 1 "+str(dc)+"\n")
     text.write("r 1 2 "+str(res)+"\n")
     text.write("c 2 0 "+str(cap)+"\n")
     text.write(str(time)+"\n")
-    # text.write(str(res)+"\n")
-    # text.write(str(dc)+"\n")
-    # text.write(str(cap)+"\n")
-    # text.write(str(time))
     text.close()
 
+#Fungsi untuk memulai proses perhitungan simulasi
 def calc():
-    # os.system("gcc -o run mainprog.c matriks.c && run")
+    #Kalau semua input belum keisi, akan muncul pesan error pada label 
     try:
         res=proc_res()
         dc=proc_DC()
@@ -201,8 +215,7 @@ def calc():
     except:
         label_Process.configure(text="Please fill all components\nvalue first...")
 
-#bar increase
-
+#Fungsi callback untuk tampilan progress bar
 def bar2():
     label_Process.configure(text="Processing.....")
     bar['value']=20
@@ -211,6 +224,7 @@ def bar3():
     bar['value']=40
     f2.after(100,bar4)
 def bar4():
+    #Compiling program C (Bisa dihapus kalau program C udah tidak ada revisi)
     label_Process.configure(text="Running C Code.....")
     os.system("gcc -o run ../programc/mainprog.c ../programc/matriks.c ")
     bar['value']=60
@@ -218,12 +232,14 @@ def bar4():
 
 def bar5():
     bar['value']=80
+    #run program C
     os.system('run')
     print("Kode C telah di compile dan di run")
     f2.after(500,bar6)
 
 def bar6():
     bar['value']=100
+    #Progress 100% , tampilkan plot 
     updateproc()
     showplot()
 
@@ -232,7 +248,7 @@ def updateproc():
     label_Process.configure(text="Success, Showing plot...")
     print("Menampilkan Plot dari output.csv")
 
-#showplot
+#callback function untuk membaca output.csv dan menampilkan plot 
 def showplot():
     data = pd.read_csv('output.csv',encoding='utf8')
     x=data['time']
@@ -245,7 +261,7 @@ def showplot():
     pcap=data['pcap']
 
     #plot
-    #Voltage
+    #Voltage , menampilkan sesuai checkbox user
     if((vcc_state.get()) or (cap_state.get()) or (res_state.get())):
         fig=plt.figure()
         if(vcc_state.get()):
@@ -282,7 +298,7 @@ def showplot():
         plt.ylabel('Power (mW)', fontsize=16)
         plt.legend()
         plt.grid(True)
-
+    #Kalau tidak ada yang di check, muncul pesan error pada label 
     if (powertot_state.get() or powerres_state.get() or powercap_state.get() or curr_state.get() or (vcc_state.get()) or (cap_state.get()) or (res_state.get())): 
         plt.show()
     else:
@@ -358,6 +374,8 @@ powercap_chk.grid(column=2, row=13)
 
 
 #dont change
+
+#pertama raise frame intro dahulu
 raise_frame(f1)
 inputtext()
 window.mainloop()
